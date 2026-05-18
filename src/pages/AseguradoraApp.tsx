@@ -1,21 +1,19 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import {
   ArrowRight,
   ArrowUpRight,
-  BarChart3,
+  BadgeCheck,
   BrainCircuit,
   CheckCircle2,
+  DollarSign,
   HeartHandshake,
   HeartPulse,
-  Leaf,
-  MessageCircleMore,
   PhoneCall,
   ScanSearch,
   ShieldCheck,
   Sparkles,
   Stethoscope,
-  TrendingDown,
   Users,
 } from 'lucide-react'
 
@@ -23,10 +21,9 @@ const navItems = [
   { href: '#servicio', label: 'Servicio' },
   { href: '#prevencion', label: 'Prevención' },
   { href: '#fisioterapia', label: 'Fisioterapia' },
+  { href: '#planes', label: 'Planes' },
   { href: '#producto', label: 'Producto' },
-  { href: '#resultados', label: 'Resultados' },
   { href: '#comunicacion', label: 'Comunicación' },
-  { href: '#precios', label: 'Precios' },
 ]
 
 const heroStats = [
@@ -162,43 +159,6 @@ const developments = [
   },
 ]
 
-const results = [
-  { value: '2,3 M€', label: 'Ahorro anual estimado sobre la cartera MSK con el modelo híbrido.' },
-  { value: '30%', label: 'Reducción del coste por episodio en los casos aplicables al modelo digital.' },
-  { value: '12,8%', label: 'Reducción estimada sobre el coste total MSK.' },
-  { value: '35%', label: 'Casos aplicables al modelo híbrido entre presencialidad y seguimiento digital.' },
-]
-
-const outcomeBlocks = [
-  {
-    title: 'Prevención y uso diario',
-    icon: <Leaf className="h-5 w-5" />,
-    items: [
-      'Mayor adherencia gracias a programas personalizados y uso recurrente.',
-      'La póliza pasa de ser reactiva a convertirse en una herramienta activa de bienestar diario.',
-      'Reducción de episodios leves recurrentes, recaídas y primeras consultas innecesarias.',
-    ],
-  },
-  {
-    title: 'Eficiencia asistencial',
-    icon: <TrendingDown className="h-5 w-5" />,
-    items: [
-      'Inicio más rápido del tratamiento con videoconsulta y derivación directa.',
-      'Liberación de capacidad en clínicas para casos complejos.',
-      'Mismo resultado clínico con menos coste por episodio en el modelo híbrido.',
-    ],
-  },
-  {
-    title: 'Experiencia y fidelidad',
-    icon: <Users className="h-5 w-5" />,
-    items: [
-      'Mejor experiencia del asegurado por acceso territorial y menor fricción.',
-      'Aumento de la satisfacción y del NPS en usuarios activos frente a no activos.',
-      'Mayor captación, retención y percepción de valor de la póliza.',
-    ],
-  },
-]
-
 const communicationPhases = [
   {
     id: 1,
@@ -235,27 +195,28 @@ const communicationPhases = [
   },
 ]
 
-const tiers = [
-  { lic: 50000, unit: 1.6 },
-  { lic: 100000, unit: 1.57 },
-  { lic: 200000, unit: 1.5 },
-  { lic: 300000, unit: 1.44 },
-  { lic: 400000, unit: 1.38 },
-  { lic: 500000, unit: 1.31 },
-  { lic: 600000, unit: 1.25 },
-  { lic: 700000, unit: 1.18 },
-  { lic: 800000, unit: 1.12 },
-  { lic: 900000, unit: 1.05 },
-  { lic: 1000000, unit: 0.99 },
+const hsbcEssentialPlan = [
+  'Evaluación y personalización',
+  'Tecnología de asistente virtual',
+  'Soluciones especializadas',
+  'Educación continua',
 ]
 
-function formatNumber(n: number) {
-  return new Intl.NumberFormat('es-ES').format(n)
-}
+const hsbcAdvancedPlan = [
+  'Plan esencial + seguimiento proactivo',
+  'Atención multicanal: videollamadas y chat con fisioterapeutas',
+  'Acciones de dinamización',
+  'Modelo de gestión dedicada + inteligencia de datos',
+]
 
-function formatMoney(n: number) {
-  return `${n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`
-}
+const hsbcPricing = [
+  'Entrada',
+  'Crecimiento',
+  'Escala media',
+  'Gran cartera',
+  'Cobertura amplia',
+  'Modelo expandido',
+]
 
 function SectionHeader({
   eyebrow,
@@ -329,8 +290,6 @@ function ContentCard({
 }
 
 export default function AseguradoraApp() {
-  const [activeTier, setActiveTier] = useState(0)
-
   useEffect(() => {
     const previousTitle = document.title
     document.title = 'Aseguradora | Fisioterapia digital para aseguradoras'
@@ -338,24 +297,6 @@ export default function AseguradoraApp() {
       document.title = previousTitle
     }
   }, [])
-
-  const tier = tiers[activeTier]
-  const save = activeTier === 0 ? 0 : ((tiers[0].unit - tier.unit) / tiers[0].unit) * 100
-
-  const minUnit = tiers[tiers.length - 1].unit
-  const maxUnit = tiers[0].unit
-  const width = 800
-  const height = 260
-  const pad = 40
-  const xs = tiers.map((_, index) => pad + (index / (tiers.length - 1)) * (width - pad * 2))
-  const ys = tiers.map((current) => height - pad - ((current.unit - minUnit) / (maxUnit - minUnit)) * (height - pad * 2))
-
-  let path = `M${xs[0]},${ys[0]}`
-  for (let i = 1; i < xs.length; i += 1) {
-    const cx = (xs[i - 1] + xs[i]) / 2
-    path += ` C${cx},${ys[i - 1]} ${cx},${ys[i]} ${xs[i]},${ys[i]}`
-  }
-  const area = `${path} L${xs[xs.length - 1]},${height - pad} L${xs[0]},${height - pad} Z`
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-surface text-main">
@@ -389,10 +330,10 @@ export default function AseguradoraApp() {
             </nav>
 
             <a
-              href="#precios"
+              href="#planes"
               className="hidden md:inline-flex items-center gap-2 rounded-full border border-[#0a1628]/10 bg-white px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-[#0a1628]/80 transition-all duration-300 hover:border-[#00008f]/30 hover:text-[#00008f]"
             >
-              Ver precios
+              Ver planes
               <ArrowRight className="h-3.5 w-3.5" />
             </a>
           </div>
@@ -725,6 +666,107 @@ export default function AseguradoraApp() {
           </div>
         </section>
 
+        <section id="planes" className="mx-auto max-w-[1440px] px-5 lg:px-10 py-10 lg:py-20">
+          <PageMotion className="max-w-4xl">
+            <div className="section-label mb-5">HSBC · Planes</div>
+            <h2 className="heading-display text-5xl md:text-6xl lg:text-[5.2rem] leading-[0.92] tracking-tight text-[#0a1628]">
+              Dos niveles de servicio
+              <br />
+              para acompañar cada uso
+            </h2>
+            <p className="mt-6 max-w-3xl text-lg md:text-xl font-light leading-relaxed text-[#0a1628]/70">
+              La propuesta se organiza en dos planes claros, con una lectura sencilla para la aseguradora y para el canal. La estructura mantiene la lógica de la referencia HSBC, pero encaja con el lenguaje visual actual de esta presentación.
+            </p>
+          </PageMotion>
+
+          <div className="mt-10 grid lg:grid-cols-2 gap-6 mb-10">
+            <PageMotion className="rounded-[2rem] border border-[#0a1628]/10 bg-white p-6 lg:p-8 shadow-[0_10px_30px_rgba(10,22,40,0.04)]">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-2xl bg-[#eef3ff] border border-[#00008f]/15 flex items-center justify-center text-[#00008f]">
+                  <BadgeCheck size={18} />
+                </div>
+                <div>
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-[#00008f] font-medium">Plan esencial</div>
+                  <div className="text-sm text-[#0a1628]/55 font-light">Modelo de gestión + inteligencia de datos</div>
+                </div>
+              </div>
+
+              <div className="grid gap-3 mb-6">
+                {hsbcEssentialPlan.map((item) => (
+                  <div key={item} className="rounded-2xl border border-[#0a1628]/10 bg-[#f4f7fb] px-4 py-3 text-[#0a1628]/75 font-light text-sm">
+                    {item}
+                  </div>
+                ))}
+              </div>
+
+              <div className="rounded-2xl border border-[#00008f]/15 bg-[#eef3ff] p-4 mb-5">
+                <div className="text-xs uppercase tracking-[0.18em] text-[#00008f] mb-2">Lectura del plan</div>
+                <div className="text-3xl font-light text-[#0a1628]">Entrada flexible</div>
+                <p className="text-xs text-[#0a1628]/50 mt-2">Una base clara para activar el servicio sin complejidad comercial.</p>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {hsbcPricing.map((tier) => (
+                  <div key={tier} className="rounded-2xl border border-[#0a1628]/10 bg-white p-3">
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-[#0a1628]/40 mb-2">{tier}</div>
+                    <div className="text-sm text-[#00008f] font-medium">Plan esencial</div>
+                  </div>
+                ))}
+              </div>
+            </PageMotion>
+
+            <PageMotion delay={0.08} className="rounded-[2rem] border border-[#0a1628]/10 bg-white p-6 lg:p-8 shadow-[0_10px_30px_rgba(10,22,40,0.04)]">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-2xl bg-[#eef3ff] border border-[#00008f]/15 flex items-center justify-center text-[#00008f]">
+                  <DollarSign size={18} />
+                </div>
+                <div>
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-[#00008f] font-medium">Plan avanzado</div>
+                  <div className="text-sm text-[#0a1628]/55 font-light">Plan esencial + seguimiento proactivo</div>
+                </div>
+              </div>
+
+              <div className="grid gap-3 mb-6">
+                {hsbcAdvancedPlan.map((item) => (
+                  <div key={item} className="rounded-2xl border border-[#0a1628]/10 bg-[#f4f7fb] px-4 py-3 text-[#0a1628]/75 font-light text-sm">
+                    {item}
+                  </div>
+                ))}
+              </div>
+
+              <div className="rounded-2xl border border-[#00008f]/15 bg-[#eef3ff] p-4 mb-5">
+                <div className="text-xs uppercase tracking-[0.18em] text-[#00008f] mb-2">Lectura del plan</div>
+                <div className="text-3xl font-light text-[#0a1628]">Cobertura avanzada</div>
+                <p className="text-xs text-[#0a1628]/50 mt-2">Más seguimiento, más canal y más capacidad de activación.</p>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {hsbcPricing.map((tier) => (
+                  <div key={tier} className="rounded-2xl border border-[#0a1628]/10 bg-white p-3">
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-[#0a1628]/40 mb-2">{tier}</div>
+                    <div className="text-sm text-[#00008f] font-medium">Plan avanzado</div>
+                  </div>
+                ))}
+              </div>
+            </PageMotion>
+          </div>
+
+          <PageMotion className="rounded-[2rem] border border-[#0a1628]/10 bg-white p-6 lg:p-8 shadow-[0_10px_30px_rgba(10,22,40,0.04)]">
+            <div className="flex items-center gap-4 mb-5">
+              <div className="w-10 h-10 rounded-2xl bg-[#eef3ff] border border-[#00008f]/15 flex items-center justify-center text-[#00008f] flex-shrink-0">
+                <Users size={18} />
+              </div>
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.24em] text-[#00008f] font-medium">Lectura ejecutiva</div>
+                <div className="text-sm text-[#0a1628]/55 font-light">Más valor en producto, más claridad en negocio</div>
+              </div>
+            </div>
+            <p className="text-[#0a1628]/70 font-light leading-relaxed max-w-5xl">
+              El objetivo no es sumar una funcionalidad aislada, sino convertir la fisioterapia digital en un servicio fácil de explicar, fácil de contratar y fácil de usar, para que la aseguradora pueda mostrar valor de forma clara en cada etapa del recorrido.
+            </p>
+          </PageMotion>
+        </section>
+
         <section id="producto" className="mx-auto max-w-[1440px] px-5 lg:px-10 py-10 lg:py-20">
           <SectionHeader
             eyebrow="Producto"
@@ -872,67 +914,6 @@ export default function AseguradoraApp() {
           </PageMotion>
         </section>
 
-        <section id="resultados" className="mx-auto max-w-[1440px] px-5 lg:px-10 py-10 lg:py-20">
-          <PageMotion className="max-w-4xl">
-            <div className="section-label mb-5">Resultados</div>
-            <h2 className="heading-display text-5xl md:text-6xl lg:text-[5.2rem] leading-[0.92] tracking-tight text-[#0a1628]">
-              Resultados que hacen visible el valor clínico y económico
-            </h2>
-            <p className="mt-6 text-lg md:text-xl font-light leading-relaxed text-[#0a1628]/70">
-              Estos son los resultados que podemos obtener con la propuesta: menos coste, más adherencia, mejor experiencia y una póliza más activa.
-            </p>
-          </PageMotion>
-
-          <div className="mt-10 grid md:grid-cols-2 xl:grid-cols-4 gap-5">
-            {results.map((result, index) => (
-              <PageMotion key={result.value} delay={index * 0.05}>
-                <MetricCard value={result.value} label={result.label} />
-              </PageMotion>
-            ))}
-          </div>
-
-          <div className="mt-8 grid lg:grid-cols-3 gap-5">
-            {outcomeBlocks.map((block, index) => (
-              <PageMotion key={block.title} delay={index * 0.05}>
-                <div className="rounded-[2rem] border border-[#0a1628]/10 bg-white p-6 lg:p-7 shadow-[0_10px_30px_rgba(10,22,40,0.04)] h-full">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-[#eef3ff] border border-[#00008f]/15 flex items-center justify-center text-[#00008f]">
-                      {block.icon}
-                    </div>
-                    <div className="text-[11px] uppercase tracking-[0.24em] text-[#00008f]">Resultado</div>
-                  </div>
-                  <h3 className="mt-5 text-2xl font-medium text-[#0a1628]">{block.title}</h3>
-                  <div className="mt-5 space-y-3">
-                    {block.items.map((item) => (
-                      <div key={item} className="rounded-2xl border border-[#0a1628]/10 bg-[#f4f7fb] px-4 py-3 text-sm md:text-[15px] leading-relaxed text-[#0a1628]/75 font-light">
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </PageMotion>
-            ))}
-          </div>
-
-          <PageMotion className="mt-10 rounded-[2rem] border border-[#0a1628]/10 bg-white p-6 lg:p-8 shadow-[0_10px_30px_rgba(10,22,40,0.04)]">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#eef3ff] border border-[#00008f]/15 flex items-center justify-center text-[#00008f] flex-shrink-0">
-                <BarChart3 size={20} />
-              </div>
-              <div>
-                <div className="text-[11px] uppercase tracking-[0.22em] text-[#00008f] font-medium mb-3">Lectura ejecutiva</div>
-                <h3 className="heading-display text-2xl lg:text-3xl text-[#0a1628] tracking-tight">
-                  El valor se ve en uso, coste y percepción de servicio
-                </h3>
-                <p className="text-[#0a1628]/70 font-light leading-relaxed mt-4 max-w-4xl">
-                  La combinación de prevención, fisioterapia híbrida y seguimiento digital permite reducir coste por episodio, liberar red asistencial,
-                  elevar la adherencia y mejorar la satisfacción del asegurado.
-                </p>
-              </div>
-            </div>
-          </PageMotion>
-        </section>
-
         <section id="comunicacion" className="mx-auto max-w-[1440px] px-5 lg:px-10 py-10 lg:py-20">
           <SectionHeader
             eyebrow="Comunicación"
@@ -993,180 +974,6 @@ export default function AseguradoraApp() {
           </div>
         </section>
 
-        <section id="precios" className="mx-auto max-w-[1440px] px-5 pb-24 lg:px-10 lg:py-20">
-          <PageMotion className="max-w-4xl">
-            <div className="section-label mb-5">Precios</div>
-            <h2 className="heading-display text-5xl md:text-6xl lg:text-[5.4rem] leading-[0.92] tracking-tight text-[#0a1628]">
-              Un modelo escalado
-              <br />
-              que recompensa
-              <br />
-              <em>el volumen</em>
-            </h2>
-            <p className="mt-6 max-w-3xl text-lg md:text-xl font-light leading-relaxed text-[#0a1628]/70">
-              Empezamos con un mínimo de 50.000 licencias a 1,60 € y descendemos progresivamente hasta 1.000.000 de licencias a 0,99 € por licencia.
-            </p>
-          </PageMotion>
-
-          <div className="mt-10 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-            <PageMotion className="rounded-[2.4rem] border border-[#0a1628]/10 bg-white/90 p-5 shadow-[0_18px_55px_rgba(10,22,40,0.06)] backdrop-blur-xl">
-              <div className="flex flex-col gap-2 border-b border-[#0a1628]/10 px-3 pb-5">
-                <div className="text-[11px] uppercase tracking-[0.18em] text-[#00008f] font-semibold">Simulador</div>
-                <h3 className="text-2xl md:text-3xl font-medium text-[#0a1628]">Ajusta el volumen y ve el impacto</h3>
-                <p className="max-w-3xl text-sm leading-relaxed text-[#0a1628]/70 font-light">
-                  Ajusta el volumen para ver el precio por licencia y el coste total anual.
-                </p>
-              </div>
-
-              <div className="px-3 py-6">
-                <input
-                  className="w-full accent-[#00008f]"
-                  type="range"
-                  min="0"
-                  max={tiers.length - 1}
-                  step="1"
-                  value={activeTier}
-                  onChange={(event) => setActiveTier(Number(event.target.value))}
-                />
-                <div className="mt-2 flex justify-between text-xs text-[#0a1628]/45">
-                  <span>50.000</span>
-                  <span>1.000.000</span>
-                </div>
-              </div>
-
-              <div className="grid gap-3 px-3">
-                <div className="rounded-[1.4rem] border border-[#0a1628]/10 bg-[#f4f7fb] px-4 py-4">
-                  <div className="flex items-center justify-between text-sm text-[#0a1628]/60">
-                    <span>Licencias</span>
-                    <b className="text-base font-medium text-[#0a1628]">{formatNumber(tier.lic)}</b>
-                  </div>
-                </div>
-                <div className="rounded-[1.4rem] border border-[#0a1628]/10 bg-[#f4f7fb] px-4 py-4">
-                  <div className="flex items-center justify-between text-sm text-[#0a1628]/60">
-                    <span>Precio / licencia</span>
-                    <b className="text-base font-medium text-[#0a1628]">{formatMoney(tier.unit)}</b>
-                  </div>
-                </div>
-                <div className="rounded-[1.4rem] border border-[#0a1628]/10 bg-[#f4f7fb] px-4 py-4">
-                  <div className="flex items-center justify-between text-sm text-[#0a1628]/60">
-                    <span>Ahorro vs. tramo inicial</span>
-                    <b className="text-base font-medium text-[#0a1628]">{activeTier === 0 ? '—' : `−${save.toFixed(1).replace('.', ',')}%`}</b>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6 rounded-[1.8rem] border border-[#00008f]/15 bg-[#00008f] p-6 text-white">
-                <div className="text-[11px] uppercase tracking-[0.18em] text-white/70 font-semibold">Coste total anual</div>
-                <div className="mt-2 text-4xl font-medium">{formatMoney(tier.lic * tier.unit)}</div>
-                <p className="mt-3 text-sm leading-relaxed text-white/75">
-                  {activeTier === 0
-                    ? `Tramo de entrada · ${formatNumber(tier.lic)} licencias × ${formatMoney(tier.unit)}`
-                    : `Tramo ${activeTier + 1} de ${tiers.length} · ${formatNumber(tier.lic)} licencias × ${formatMoney(tier.unit)}`}
-                </p>
-              </div>
-            </PageMotion>
-
-            <PageMotion delay={0.08} className="rounded-[2.4rem] border border-[#0a1628]/10 bg-white/90 p-6 shadow-[0_18px_55px_rgba(10,22,40,0.06)] backdrop-blur-xl">
-              <div className="flex flex-col gap-2 border-b border-[#0a1628]/10 px-3 pb-5">
-                <div className="text-[11px] uppercase tracking-[0.18em] text-[#00008f] font-semibold">Escalado</div>
-                <h3 className="text-2xl md:text-3xl font-medium text-[#0a1628]">La tabla de tramos, en formato más visual</h3>
-                <p className="max-w-3xl text-sm leading-relaxed text-[#0a1628]/70 font-light">
-                  El precio decrece de forma continua: a más volumen, más eficiencia para la aseguradora.
-                </p>
-              </div>
-
-              <div className="grid gap-4 px-3 py-6">
-                {tiers.map((item, index) => {
-                  const active = index === activeTier
-                  const barWidth = ((maxUnit - item.unit) / (maxUnit - minUnit)) * 100
-                  return (
-                    <button
-                      key={item.lic}
-                      type="button"
-                      onClick={() => setActiveTier(index)}
-                      className={`group relative overflow-hidden rounded-[1.6rem] border p-5 text-left transition-all duration-300 ${
-                        active
-                          ? 'border-[#00008f]/25 bg-[#00008f] text-white shadow-[0_18px_40px_rgba(0,0,143,0.18)]'
-                          : 'border-[#0a1628]/10 bg-[#f4f7fb] hover:-translate-y-0.5 hover:border-[#00008f]/20 hover:bg-white'
-                      }`}
-                    >
-                      <div className="absolute inset-x-0 top-0 h-1" style={{ background: active ? 'rgba(255,255,255,0.25)' : 'linear-gradient(90deg, #00008f, #4976ba)' }} />
-                      <div className={`text-[11px] uppercase tracking-[0.18em] ${active ? 'text-white/70' : 'text-[#0a1628]/45'}`}>
-                        Licencias
-                      </div>
-                      <div className={`mt-4 flex items-end justify-between gap-4 ${active ? 'text-white' : 'text-[#0a1628]'}`}>
-                        <div className="text-2xl font-medium">{formatNumber(item.lic)}</div>
-                        <div className={`text-xl font-medium ${active ? 'text-white/95' : 'text-[#00008f]'}`}>{formatMoney(item.unit)}</div>
-                      </div>
-                      <div className={`mt-5 h-2 overflow-hidden rounded-full ${active ? 'bg-white/12' : 'bg-black/5'}`}>
-                        <div
-                          className={`h-full rounded-full ${active ? 'bg-white/85' : 'bg-gradient-to-r from-[#00008f] to-[#4976ba]'}`}
-                          style={{ width: `${Math.max(6, barWidth)}%` }}
-                        />
-                      </div>
-                    </button>
-                  )
-                })}
-              </div>
-
-              <div className="px-3 pb-2">
-                <div className="text-[11px] uppercase tracking-[0.18em] text-[#00008f] font-semibold">Lectura final</div>
-                <p className="mt-3 text-sm leading-relaxed text-[#0a1628]/70 font-light">
-                  El precio decrece de forma continua y el punto activo se destaca para que la lectura sea inmediata.
-                </p>
-              </div>
-              <svg viewBox={`0 0 ${width} ${height}`} className="mt-5 h-auto w-full">
-                <defs>
-                  <linearGradient id="priceFill" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="rgba(0,0,143,0.26)" />
-                    <stop offset="100%" stopColor="rgba(0,0,143,0.04)" />
-                  </linearGradient>
-                </defs>
-                <line x1={pad} y1={height - pad} x2={width - pad} y2={height - pad} stroke="rgba(10,22,40,0.08)" />
-                <line x1={pad} y1={pad} x2={pad} y2={height - pad} stroke="rgba(10,22,40,0.08)" />
-                <path d={area} fill="url(#priceFill)" />
-                <path d={path} fill="none" stroke="#00008f" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                {tiers.map((item, index) => {
-                  const active = index === activeTier
-                  return (
-                    <g key={item.lic}>
-                      <circle cx={xs[index]} cy={ys[index]} r={active ? 6 : 4} fill="#FFFDF8" stroke="#00008f" strokeWidth={active ? 2.5 : 2} />
-                      {active && <circle cx={xs[index]} cy={ys[index]} r={10} fill="rgba(0,0,143,0.12)" />}
-                      {(index === 0 || index === tiers.length - 1 || index === 5) && (
-                        <text x={xs[index]} y={ys[index] - 12} textAnchor="middle" fontFamily="Sora" fontSize="11" fontWeight="500" fill="#00008f">
-                          {formatMoney(item.unit)}
-                        </text>
-                      )}
-                      <text x={xs[index]} y={height - 12} textAnchor="middle" fontFamily="Sora" fontSize="10" fill="#6d7688">
-                        {`${item.lic / 1000}k`}
-                      </text>
-                    </g>
-                  )
-                })}
-              </svg>
-            </PageMotion>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-[1440px] px-5 lg:px-10 pb-12 lg:pb-16">
-          <PageMotion className="rounded-[2rem] border border-[#0a1628]/10 bg-white p-6 lg:p-8 shadow-[0_10px_30px_rgba(10,22,40,0.04)]">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#eef3ff] border border-[#00008f]/15 flex items-center justify-center text-[#00008f] flex-shrink-0">
-                <MessageCircleMore size={20} />
-              </div>
-              <div>
-                <div className="text-[11px] uppercase tracking-[0.22em] text-[#00008f] font-medium mb-3">Lectura final</div>
-                <h3 className="heading-display text-2xl lg:text-3xl text-[#0a1628] tracking-tight">
-                  Prevención y bienestar para que la póliza se sienta útil todos los días
-                </h3>
-                <p className="text-[#0a1628]/70 font-light leading-relaxed mt-4 max-w-4xl">
-                  El objetivo no es sumar una funcionalidad aislada, sino construir una experiencia preventiva y cotidiana que combine tecnología,
-                  cercanía y seguimiento para mejorar la relación con el asegurado y hacer más visible el valor del seguro.
-                </p>
-              </div>
-            </div>
-          </PageMotion>
-        </section>
       </main>
 
       <footer className="border-t border-[#0a1628]/10 bg-white">
